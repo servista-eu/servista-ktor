@@ -39,6 +39,12 @@ dependencies {
     // Prometheus metrics registry (already in observability plugin, explicit for clarity)
     implementation(libs.micrometer.prometheus)
 
+    // Kafka clients (already in jooq convention plugin via servista-commons, explicit for KafkaProducer wrapper)
+    implementation(libs.kafka.clients)
+
+    // Testcontainers PostgreSQL (TC 2.x renamed module)
+    testImplementation("org.testcontainers:testcontainers-postgresql:2.0.3")
+
     // JUnit Platform launcher (required by Gradle 9.x test execution)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
