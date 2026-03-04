@@ -4,14 +4,14 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: "01"
 current_plan: "01-03"
-status: in-progress
-stopped_at: Completed 01-03-PLAN.md
-last_updated: "2026-03-04T07:05:19Z"
+status: phase-complete
+stopped_at: Completed 01-02-PLAN.md (all phase 01 plans complete)
+last_updated: "2026-03-04T07:15:52Z"
 progress:
   total_phases: 1
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 3
-  completed_plans: 2
+  completed_plans: 3
 ---
 
 # Project State: Servista Ktor
@@ -25,14 +25,14 @@ progress:
 ## Execution Position
 
 **Current Phase:** 01
-**Current Plan:** 01-03
-**Status:** In progress (2/3 plans, 01-02 pending)
+**Current Plan:** 01-03 (all complete)
+**Status:** Phase complete (3/3 plans)
 
 ## Phase Status
 
 | Phase | Name | Status |
 |-------|------|--------|
-| 1 | Ktor Scaffold | In Progress (2/3 plans) |
+| 1 | Ktor Scaffold | Complete (3/3 plans) |
 
 ## Decisions
 
@@ -47,6 +47,10 @@ progress:
 - Created HealthResponseDto bridge for non-@Serializable upstream health types
 - Added Janino 3.1.12 for Logback conditional processing
 - configOrNull extension handles missing HOCON sections via try-catch
+- KafkaConsumerProperties data class (not factory) because ServistaKafkaConsumer requires service-specific handler/DLQ
+- suspendCancellableCoroutine for Kafka send because KafkaProducer returns Future (not CompletableFuture)
+- koinApplication {} (isolated) in tests to avoid global Koin context conflicts with Ktor testApplication
+- Podman rootless socket configured in build.gradle.kts for Testcontainers
 - OTel agent attached via JAVA_TOOL_OPTIONS env var for easy disable/debug override
 - 10% head-based trace sampling as production default (OTEL_TRACES_SAMPLER_ARG=0.1)
 - Startup probe allows 2.5 min startup (initialDelay 5s + failureThreshold 30 * period 5s)
@@ -57,6 +61,7 @@ progress:
 | Phase | Plan | Duration | Tasks | Files |
 |-------|------|----------|-------|-------|
 | 01 | 01 | 6min | 3 | 20 |
+| 01 | 02 | 12min | 2 | 22 |
 | 01 | 03 | 2min | 2 | 6 |
 
 ## Notes
@@ -69,5 +74,5 @@ progress:
 
 ## Last Session
 
-**Stopped at:** Completed 01-03-PLAN.md
-**Timestamp:** 2026-03-04T07:05:19Z
+**Stopped at:** Completed 01-02-PLAN.md (all phase 01 plans complete)
+**Timestamp:** 2026-03-04T07:15:52Z
