@@ -9,7 +9,7 @@ Requirements extracted from governance repo for this component.
 
 ### Ktor Scaffold
 
-- [ ] **FOUND-06**: Service scaffold template -- database migrations (Flyway), health checks, structured logging, OpenTelemetry tracing, Kafka producer/consumer boilerplate
+- [x] **FOUND-06**: Service scaffold template -- database migrations (Flyway), health checks, structured logging, OpenTelemetry tracing, Kafka producer/consumer boilerplate
 
 ### Governance Mapping
 
