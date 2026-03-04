@@ -71,13 +71,9 @@ fun registerDatabaseHealthCheck(healthRegistry: HealthRegistry, dsl: org.jooq.DS
                 status = HealthStatus.UP,
                 details = mapOf("type" to "postgresql"),
             )
-        } catch (e: Exception) {
+        } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
             logger.warn(e) { "Database health check failed" }
-            HealthCheckResult(
-                name = "database",
-                status = HealthStatus.DOWN,
-                error = e.message,
-            )
+            HealthCheckResult(name = "database", status = HealthStatus.DOWN, error = e.message)
         }
     }
 }

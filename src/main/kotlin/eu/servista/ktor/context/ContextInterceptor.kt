@@ -22,8 +22,7 @@ import kotlinx.coroutines.withContext
  */
 fun Application.installContextInterceptor() {
     intercept(ApplicationCallPipeline.Plugins) {
-        val correlationId =
-            call.request.header("X-Correlation-Id") ?: UUID.randomUUID().toString()
+        val correlationId = call.request.header("X-Correlation-Id") ?: UUID.randomUUID().toString()
         val organizationId = call.request.header("X-Organization-Id")?.toLongOrNull()
         val accountId = call.request.header("X-Account-Id")?.toLongOrNull()
 

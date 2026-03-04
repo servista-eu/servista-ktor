@@ -3,6 +3,8 @@ package eu.servista.ktor.kafka
 import eu.servista.ktor.KafkaConfig
 import io.github.oshai.kotlinlogging.KotlinLogging
 import java.util.Properties
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 import kotlinx.coroutines.suspendCancellableCoroutine
 import org.apache.kafka.clients.producer.KafkaProducer
 import org.apache.kafka.clients.producer.ProducerConfig
@@ -10,16 +12,14 @@ import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.clients.producer.RecordMetadata
 import org.apache.kafka.common.serialization.ByteArraySerializer
 import org.apache.kafka.common.serialization.StringSerializer
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
 
 private val logger = KotlinLogging.logger {}
 
 /**
  * Thin wrapper around [KafkaProducer] with HOCON-driven configuration and coroutine-friendly send.
  *
- * EventBuilder from servista-commons handles envelope construction and Avro encoding upstream.
- * This wrapper only concerns itself with producing raw byte arrays to Kafka topics.
+ * EventBuilder from servista-commons handles envelope construction and Avro encoding upstream. This
+ * wrapper only concerns itself with producing raw byte arrays to Kafka topics.
  *
  * @param config Kafka configuration from HOCON (brokers, schema registry URL)
  */
@@ -28,19 +28,17 @@ class ServistaKafkaProducer(config: KafkaConfig) {
     private val producer: KafkaProducer<String, ByteArray>
 
     init {
-        val props = Properties().apply {
-            put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, config.brokers)
-            put(
-                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
-                StringSerializer::class.java.name,
-            )
-            put(
-                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-                ByteArraySerializer::class.java.name,
-            )
-            put(ProducerConfig.ACKS_CONFIG, "all")
-            put("schema.registry.url", config.schemaRegistryUrl)
-        }
+        val props =
+            Properties().apply {
+                put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, config.brokers)
+                put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer::class.java.name)
+                put(
+                    ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
+                    ByteArraySerializer::class.java.name,
+                )
+                put(ProducerConfig.ACKS_CONFIG, "all")
+                put("schema.registry.url", config.schemaRegistryUrl)
+            }
         producer = KafkaProducer(props)
         logger.info { "ServistaKafkaProducer initialized: brokers=${config.brokers}" }
     }

@@ -27,7 +27,8 @@ dependencies {
     // Upstream: framework-agnostic commons (ServistaException, HealthRegistry, ServistaContext)
     implementation("eu.servista:servista-commons:0.1.0")
 
-    // JSON structured logging for production (logstash-logback-encoder 8.1, NOT 9.0 which requires Jackson 3.x)
+    // JSON structured logging for production (logstash-logback-encoder 8.1, NOT 9.0 which requires
+    // Jackson 3.x)
     implementation("net.logstash.logback:logstash-logback-encoder:8.1")
 
     // Janino for Logback conditional processing (<if> tags in logback.xml)
@@ -39,7 +40,8 @@ dependencies {
     // Prometheus metrics registry (already in observability plugin, explicit for clarity)
     implementation(libs.micrometer.prometheus)
 
-    // Kafka clients (already in jooq convention plugin via servista-commons, explicit for KafkaProducer wrapper)
+    // Kafka clients (already in jooq convention plugin via servista-commons, explicit for
+    // KafkaProducer wrapper)
     implementation(libs.kafka.clients)
 
     // Testcontainers PostgreSQL (TC 2.x renamed module)
@@ -47,4 +49,14 @@ dependencies {
 
     // JUnit Platform launcher (required by Gradle 9.x test execution)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+// Testcontainers with Podman rootless socket
+tasks.withType<Test>().configureEach {
+    val podmanSocket =
+        "/run/user/${
+        providers.exec { commandLine("id", "-u") }.standardOutput.asText.get().trim()
+    }/podman/podman.sock"
+    environment("DOCKER_HOST", "unix://$podmanSocket")
+    environment("TESTCONTAINERS_RYUK_DISABLED", "true")
 }

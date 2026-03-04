@@ -14,13 +14,12 @@ import kotlinx.serialization.encodeToString
 
 /**
  * Register Kubernetes probe health check endpoints.
- *
  * - `/health/startup` -- Startup probe (ready to accept traffic)
  * - `/health/live` -- Liveness probe (process is running correctly)
  * - `/health/ready` -- Readiness probe (ready to handle requests)
  *
- * Maps [HealthStatus.UP] and [HealthStatus.DEGRADED] to 200 OK, [HealthStatus.DOWN] to 503
- * Service Unavailable.
+ * Maps [HealthStatus.UP] and [HealthStatus.DEGRADED] to 200 OK, [HealthStatus.DOWN] to 503 Service
+ * Unavailable.
  */
 fun Route.healthRoutes(healthRegistry: HealthRegistry) {
     route("/health") {

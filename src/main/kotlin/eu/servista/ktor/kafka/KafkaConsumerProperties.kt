@@ -34,10 +34,11 @@ data class KafkaConsumerProperties(
      * [eu.servista.commons.kafka.ServistaConsumerConfig.consumerProperties].
      */
     val additionalProperties: Map<String, Any>
-        get() = mapOf(
-            "schema.registry.url" to schemaRegistryUrl,
-            "auto.offset.reset" to autoOffsetReset,
-        )
+        get() =
+            mapOf(
+                "schema.registry.url" to schemaRegistryUrl,
+                "auto.offset.reset" to autoOffsetReset,
+            )
 
     companion object {
         /**
@@ -46,9 +47,10 @@ data class KafkaConsumerProperties(
          * Requires [KafkaConfig.consumer] to be non-null (caller should check before invoking).
          */
         fun from(kafkaConfig: KafkaConfig): KafkaConsumerProperties {
-            val consumer = requireNotNull(kafkaConfig.consumer) {
-                "KafkaConfig.consumer must be non-null to create KafkaConsumerProperties"
-            }
+            val consumer =
+                requireNotNull(kafkaConfig.consumer) {
+                    "KafkaConfig.consumer must be non-null to create KafkaConsumerProperties"
+                }
             return KafkaConsumerProperties(
                 bootstrapServers = kafkaConfig.brokers,
                 groupId = consumer.groupId,

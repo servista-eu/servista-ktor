@@ -2,7 +2,6 @@ package eu.servista.ktor.health
 
 import eu.servista.commons.health.HealthCheckResult
 import eu.servista.commons.health.HealthResponse
-import eu.servista.commons.health.HealthStatus
 import kotlinx.serialization.Serializable
 
 /**
@@ -46,11 +45,7 @@ data class HealthCheckResultDto(
 }
 
 @Serializable
-data class BuildInfoDto(
-    val version: String,
-    val gitSha: String,
-    val buildTimestamp: String,
-) {
+data class BuildInfoDto(val version: String, val gitSha: String, val buildTimestamp: String) {
     companion object {
         fun from(buildInfo: eu.servista.commons.health.BuildInfo) =
             BuildInfoDto(

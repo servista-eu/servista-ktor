@@ -32,11 +32,7 @@ data class ServistaConfig(
 }
 
 /** Database connection configuration. */
-data class DatabaseConfig(
-    val url: String,
-    val user: String,
-    val password: String,
-) {
+data class DatabaseConfig(val url: String, val user: String, val password: String) {
     companion object {
         fun from(config: ApplicationConfig) =
             DatabaseConfig(
@@ -68,10 +64,7 @@ data class KafkaConfig(
 }
 
 /** Kafka consumer configuration for services that consume events. */
-data class KafkaConsumerConfig(
-    val groupId: String,
-    val autoOffsetReset: String = "earliest",
-) {
+data class KafkaConsumerConfig(val groupId: String, val autoOffsetReset: String = "earliest") {
     companion object {
         fun from(config: ApplicationConfig) =
             KafkaConsumerConfig(
@@ -86,10 +79,7 @@ data class KafkaConsumerConfig(
 data class LoggingConfig(val requests: RequestLoggingConfig) {
     companion object {
         fun from(config: ApplicationConfig?) =
-            LoggingConfig(
-                requests =
-                    RequestLoggingConfig.from(config?.configOrNull("requests")),
-            )
+            LoggingConfig(requests = RequestLoggingConfig.from(config?.configOrNull("requests")))
     }
 }
 
@@ -107,8 +97,9 @@ data class RequestLoggingConfig(
                 RequestLoggingConfig(
                     enabled = config.propertyOrNull("enabled")?.getString()?.toBoolean() ?: true,
                     logLevel =
-                        config.propertyOrNull("level")?.getString()?.let { Level.valueOf(it.uppercase()) }
-                            ?: Level.INFO,
+                        config.propertyOrNull("level")?.getString()?.let {
+                            Level.valueOf(it.uppercase())
+                        } ?: Level.INFO,
                     excludePaths =
                         config.propertyOrNull("exclude-paths")?.getList() ?: listOf("/health"),
                 )
@@ -117,16 +108,14 @@ data class RequestLoggingConfig(
 }
 
 /** Health endpoint configuration. */
-data class HealthConfig(
-    val enabled: Boolean = true,
-) {
+data class HealthConfig(val enabled: Boolean = true) {
     companion object {
         fun from(config: ApplicationConfig?) =
             if (config == null) {
                 HealthConfig()
             } else {
                 HealthConfig(
-                    enabled = config.propertyOrNull("enabled")?.getString()?.toBoolean() ?: true,
+                    enabled = config.propertyOrNull("enabled")?.getString()?.toBoolean() ?: true
                 )
             }
     }

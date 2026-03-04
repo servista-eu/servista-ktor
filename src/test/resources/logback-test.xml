@@ -1,0 +1,19 @@
+<configuration>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Suppress verbose Ktor and Testcontainers logging during tests -->
+    <logger name="io.ktor" level="WARN" />
+    <logger name="org.testcontainers" level="INFO" />
+    <logger name="com.github.dockerjava" level="WARN" />
+    <logger name="org.flywaydb" level="INFO" />
+    <logger name="com.zaxxer.hikari" level="WARN" />
+    <logger name="org.apache.kafka" level="WARN" />
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+    </root>
+</configuration>
