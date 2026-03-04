@@ -30,6 +30,9 @@ dependencies {
     // JSON structured logging for production (logstash-logback-encoder 8.1, NOT 9.0 which requires Jackson 3.x)
     implementation("net.logstash.logback:logstash-logback-encoder:8.1")
 
+    // Janino for Logback conditional processing (<if> tags in logback.xml)
+    implementation("org.codehaus.janino:janino:3.1.12")
+
     // Ktor Micrometer metrics plugin (in version catalog but not in convention plugin)
     implementation(libs.ktor.server.metrics.micrometer)
 

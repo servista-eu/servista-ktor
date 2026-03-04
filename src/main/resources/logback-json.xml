@@ -1,0 +1,24 @@
+<included>
+    <!--
+        Servista JSON logging configuration for production/staging environments.
+        Uses logstash-logback-encoder for structured JSON output to stdout.
+        Includes MDC keys for distributed tracing correlation and tenant context.
+    -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <!-- Include MDC keys from ServistaContext and OTel agent -->
+            <includeMdcKeyName>correlation_id</includeMdcKeyName>
+            <includeMdcKeyName>organization_id</includeMdcKeyName>
+            <includeMdcKeyName>account_id</includeMdcKeyName>
+            <includeMdcKeyName>trace_id</includeMdcKeyName>
+            <includeMdcKeyName>span_id</includeMdcKeyName>
+
+            <!-- Custom fields from environment variables -->
+            <customFields>{"service_name":"${OTEL_SERVICE_NAME:-unknown}","service_version":"${SERVICE_VERSION:-unknown}"}</customFields>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+</included>

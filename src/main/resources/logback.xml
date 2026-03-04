@@ -1,0 +1,16 @@
+<configuration scan="true" scanPeriod="30 seconds">
+    <!--
+        Servista Logback routing configuration.
+        Delegates to JSON or console config based on SERVISTA_LOG_FORMAT environment variable.
+        - SERVISTA_LOG_FORMAT=json -> logback-json.xml (production: structured JSON to stdout)
+        - SERVISTA_LOG_FORMAT=console or unset -> logback-console.xml (development: colored console output)
+    -->
+    <if condition='property("SERVISTA_LOG_FORMAT").equals("json")'>
+        <then>
+            <include resource="logback-json.xml"/>
+        </then>
+        <else>
+            <include resource="logback-console.xml"/>
+        </else>
+    </if>
+</configuration>
