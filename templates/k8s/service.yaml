@@ -1,0 +1,25 @@
+# =============================================================================
+# Servista Service - Kubernetes Service
+# =============================================================================
+#
+# CUSTOMIZE for your service:
+#   - metadata.name: replace "my-service" with your service name
+#   - selector.app: must match the Deployment's pod labels
+#
+# =============================================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+  labels:
+    app: my-service
+    part-of: servista
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: http
+  selector:
+    app: my-service

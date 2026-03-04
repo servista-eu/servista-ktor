@@ -1,0 +1,26 @@
+# =============================================================================
+# Servista Service - Kubernetes ConfigMap
+# =============================================================================
+#
+# Use ConfigMap for non-secret configuration: endpoints, feature flags, tuning.
+# Use Secret (not ConfigMap) for credentials: database passwords, API keys, etc.
+#
+# CUSTOMIZE for your service:
+#   - metadata.name: replace "my-service-config" with your service name
+#   - Add service-specific non-secret configuration as needed
+#   - Update endpoint URLs to match your cluster's service names
+#
+# =============================================================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: my-service-config
+  labels:
+    app: my-service
+    part-of: servista
+data:
+  # OTel Collector gRPC endpoint in the observability namespace
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://otel-collector.observability:4317"
+
+  # Kafka bootstrap servers in the kafka namespace
+  SERVISTA_KAFKA_BROKERS: "kafka-bootstrap.kafka:9092"

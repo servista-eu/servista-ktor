@@ -1,0 +1,106 @@
+# =============================================================================
+# Servista Service - Kubernetes Deployment
+# =============================================================================
+#
+# CUSTOMIZE for your service:
+#   - metadata.name / labels: replace "my-service" with your service name
+#   - spec.template.spec.containers[0].image: your container registry and image
+#   - OTEL_SERVICE_NAME: must match your service name for tracing
+#   - Resource requests/limits: adjust based on actual service requirements
+#   - Replicas: increase for production (consider HPA instead)
+#   - Add service-specific environment variables as needed
+#
+# =============================================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-service
+  labels:
+    app: my-service
+    part-of: servista
+spec:
+  replicas: 1  # Adjust for production, consider HPA
+  selector:
+    matchLabels:
+      app: my-service
+  template:
+    metadata:
+      labels:
+        app: my-service
+    spec:
+      containers:
+        - name: my-service
+          image: registry.example.com/my-service:latest  # Replace with your registry
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+
+          env:
+            # Service identity for OTel tracing -- customize per service
+            - name: OTEL_SERVICE_NAME
+              value: "my-service"
+
+            # OTel Collector endpoint from ConfigMap
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: my-service-config
+                  key: OTEL_EXPORTER_OTLP_ENDPOINT
+
+            # Kafka brokers from ConfigMap
+            - name: SERVISTA_KAFKA_BROKERS
+              valueFrom:
+                configMapKeyRef:
+                  name: my-service-config
+                  key: SERVISTA_KAFKA_BROKERS
+
+            # Database credentials from Secret
+            - name: SERVISTA_DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: my-service-db
+                  key: url
+            - name: SERVISTA_DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: my-service-db
+                  key: username
+            - name: SERVISTA_DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: my-service-db
+                  key: password
+
+          # Startup probe: allows up to 2.5 minutes for application to start
+          # (initialDelay 5s + failureThreshold 30 * period 5s = 155s)
+          startupProbe:
+            httpGet:
+              path: /health/startup
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 30
+
+          # Liveness probe: restart container if unhealthy
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: 8080
+            periodSeconds: 15
+            failureThreshold: 3
+
+          # Readiness probe: remove from service endpoints if not ready
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: 8080
+            periodSeconds: 10
+            failureThreshold: 3
+
+          resources:
+            requests:
+              cpu: 200m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 512Mi
