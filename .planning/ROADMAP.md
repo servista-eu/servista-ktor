@@ -25,10 +25,10 @@ This roadmap delivers the Servista Ktor runtime wiring library (`servista-ktor`)
 Plans:
 - [x] 01-01-PLAN.md -- Repo scaffold + core HTTP infrastructure (StatusPages, HealthRoutes, RequestLogging, Metrics, ContextInterceptor, Logback configs)
 - [ ] 01-02-PLAN.md -- Database + Kafka integration, Koin DI module, and comprehensive test suite
-- [ ] 01-03-PLAN.md -- Reference templates (Dockerfile, Kubernetes manifests, application.conf, example migration)
+- [x] 01-03-PLAN.md -- Reference templates (Dockerfile, Kubernetes manifests, application.conf, example migration)
 
 ## Progress
 
 | Phase | Status | Plans | Progress |
 |-------|--------|-------|----------|
-| 1     | In Progress | 1/3  | 33%      |
+| 1     | In Progress | 2/3  | 67%      |

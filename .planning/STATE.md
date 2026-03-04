@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 current_phase: "01"
-current_plan: "01-02"
+current_plan: "01-03"
 status: in-progress
-stopped_at: Completed 01-01-PLAN.md
-last_updated: "2026-03-04T12:00:00.000Z"
+stopped_at: Completed 01-03-PLAN.md
+last_updated: "2026-03-04T07:05:19Z"
 progress:
   total_phases: 1
   completed_phases: 0
   total_plans: 3
-  completed_plans: 1
+  completed_plans: 2
 ---
 
 # Project State: Servista Ktor
@@ -25,14 +25,14 @@ progress:
 ## Execution Position
 
 **Current Phase:** 01
-**Current Plan:** 01-02
-**Status:** In progress (Plan 01-01 complete)
+**Current Plan:** 01-03
+**Status:** In progress (2/3 plans, 01-02 pending)
 
 ## Phase Status
 
 | Phase | Name | Status |
 |-------|------|--------|
-| 1 | Ktor Scaffold | In Progress (1/3 plans) |
+| 1 | Ktor Scaffold | In Progress (2/3 plans) |
 
 ## Decisions
 
@@ -47,12 +47,17 @@ progress:
 - Created HealthResponseDto bridge for non-@Serializable upstream health types
 - Added Janino 3.1.12 for Logback conditional processing
 - configOrNull extension handles missing HOCON sections via try-catch
+- OTel agent attached via JAVA_TOOL_OPTIONS env var for easy disable/debug override
+- 10% head-based trace sampling as production default (OTEL_TRACES_SAMPLER_ARG=0.1)
+- Startup probe allows 2.5 min startup (initialDelay 5s + failureThreshold 30 * period 5s)
+- ConfigMap for endpoints/non-sensitive config, Secret for credentials
 
 ## Performance Metrics
 
 | Phase | Plan | Duration | Tasks | Files |
 |-------|------|----------|-------|-------|
 | 01 | 01 | 6min | 3 | 20 |
+| 01 | 03 | 2min | 2 | 6 |
 
 ## Notes
 
@@ -64,5 +69,5 @@ progress:
 
 ## Last Session
 
-**Stopped at:** Completed 01-01-PLAN.md
-**Timestamp:** 2026-03-04T06:59:44Z
+**Stopped at:** Completed 01-03-PLAN.md
+**Timestamp:** 2026-03-04T07:05:19Z
